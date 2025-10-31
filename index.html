@@ -2,43 +2,365 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Calculator</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Calculator</title>
+    <!-- Professional Google Font: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ---
+           Modern Stylesheet
+           (Replaces style.css)
+        --- */
+
+        /* 1. CSS Variables & Base */
+        :root {
+            --font-primary: 'Poppins', sans-serif;
+            --color-text: #ffffff;
+            --shadow-light: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            --border-radius-lg: 20px;
+            --border-radius-sm: 12px;
+            --transition: all 0.2s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 2. Aesthetic Animated Background */
+        body {
+            font-family: var(--font-primary);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Animated Gradient */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient-flow 15s ease infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3. Aesthetic Calculator (Glassmorphism) */
+        #calculator {
+            position: relative;
+            width: 90%;
+            max-width: 370px;
+            padding: 25px;
+            overflow: hidden;
+
+            /* The "Frosted Glass" effect */
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-light);
+
+            /* Fade-in animation */
+            animation: fade-in 0.5s ease-out;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 4. Calculator Screen */
+        #screen {
+            width: 100%;
+            height: 70px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--color-text);
+            text-align: right;
+            
+            /* Screen aesthetic */
+            background: rgba(0, 0, 0, 0.2);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #screen:focus {
+            outline: none;
+        }
+
+        /* 5. Modern Button Grid (Replaces Floats) */
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .keys span {
+            padding: 18px 0;
+            font-size: 1.3rem;
+            font-weight: 500;
+            text-align: center;
+            color: var(--color-text);
+            cursor: pointer;
+
+            /* Button aesthetic */
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+            /* Smooth motion */
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .keys span:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .keys span:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+        /* Special Button Colors */
+        .keys span.clear {
+            background: rgba(255, 128, 128, 0.3); /* Soft Red */
+        }
+        .keys span.clear:hover {
+            background: rgba(255, 128, 128, 0.5);
+        }
+
+        .keys span.operator {
+            background: rgba(139, 206, 236, 0.3); /* Soft Blue */
+        }
+        .keys span.operator:hover {
+            background: rgba(139, 206, 236, 0.5);
+        }
+
+        .keys span.eval {
+            background: #a9ff92; /* Bright Green */
+            color: #333;
+        }
+        .keys span.eval:hover {
+            background: #d1ffd1;
+        }
+        
+        .keys span.history-toggle {
+            background: rgba(255, 215, 0, 0.3); /* Soft Gold */
+        }
+        .keys span.history-toggle:hover {
+            background: rgba(255, 215, 0, 0.5);
+        }
+
+        /* 6. Advanced Feature: History Panel */
+        #history {
+            position: absolute;
+            top: 0;
+            right: -300px; /* Hidden by default */
+            width: 280px;
+            height: 100%;
+            padding: 20px;
+            
+            /* Glassmorphism for the panel */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
+            box-shadow: var(--shadow-light);
+
+            transition: right 0.4s ease-in-out;
+            z-index: 10;
+        }
+
+        #history.visible {
+            right: 0;
+        }
+
+        #history h3 {
+            color: var(--color-text);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        #history-list {
+            list-style: none;
+            color: var(--color-text);
+            height: 90%;
+            overflow-y: auto;
+        }
+        #history-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+        #history-list li strong {
+            display: block;
+            font-size: 1.1rem;
+        }
+
+    </style>
 </head>
-<body onload="load()">
+<body>
+
     <div id="calculator">
-        <!-- Screen and clear key -->
-        <div class="top">
-            <span id="clear">C</span>
-            <div id="screen"></div>
+        <!-- Advanced Feature: History Panel -->
+        <div id="history">
+            <h3>History</h3>
+            <ul id="history-list">
+                <!-- History items will be added here -->
+            </ul>
         </div>
 
+        <!-- Calculator Screen -->
+        <input type="text" id="screen" readonly>
+
+        <!-- Calculator Keys -->
         <div class="keys">
-            <!-- operators and other keys -->
-            <span>7</span>
-            <span>8</span>
-            <span>9</span>
-            <span class="operator">+</span>
-            <span>4</span>
-            <span>5</span>
-            <span>6</span>
-            <span class="operator">-</span>
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span class="operator">÷</span>
-            <span>0</span>
-            <span>.</span>
-            <span class="eval">=</span>
-            <span class="operator">x</span>
+            <!-- Row 1 -->
+            <span class="clear" data-value="C">AC</span>
+            <span data-value="DEL">DEL</span>
+            <span class="history-toggle" data-value="HIST">Hist</span>
+            <span class="operator" data-value="÷">÷</span>
+            <!-- Row 2 -->
+            <span data-value="7">7</span>
+            <span data-value="8">8</span>
+            <span data-value="9">9</span>
+            <span class="operator" data-value="x">x</span>
+            <!-- Row 3 -->
+            <span data-value="4">4</span>
+            <span data-value="5">5</span>
+            <span data-value="6">6</span>
+            <span class="operator" data-value="-">-</span>
+            <!-- Row 4 -->
+            <span data-value="1">1</span>
+            <span data-value="2">2</span>
+            <span data-value="3">3</span>
+            <span class="operator" data-value="+">+</span>
+            <!-- Row 5 -->
+            <span data-value="(">(</span>
+            <span data-value="0">0</span>
+            <span data-value=")S">)</span>
+            <span class="eval" data-value="=">=</span>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2024 Your Calculator Application. </p>
-    </footer>
+    <!-- 
+      Modern JavaScript
+      (Replaces index.js)
+    -->
+    <script type="text/javascript">
+        // Wait for the DOM to load
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // Get all elements
+            const screen = document.getElementById("screen");
+            const buttons = document.querySelectorAll(".keys span");
+            const historyBtn = document.querySelector(".history-toggle");
+            const historyPanel = document.getElementById("history");
+            const historyList = document.getElementById("history-list");
 
-    <script type="text/javascript" src="js/index.js"></script>
+            let history = [];
+
+            // Add click listener to all buttons
+            buttons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const buttonValue = this.dataset.value;
+                    handleInput(buttonValue);
+                });
+            });
+
+            // Add keyboard support
+            window.addEventListener('keydown', function(e) {
+                let keyValue = e.key;
+                
+                if (keyValue === 'Enter') keyValue = '=';
+                if (keyValue === 'Backspace') keyValue = 'DEL';
+                if (keyValue === '*') keyValue = 'x';
+                if (keyValue === '/') keyValue = '÷';
+                if (e.shiftKey && keyValue === '9') keyValue = '(';
+                if (e.shiftKey && keyValue === '0') keyValue = ')';
+
+                const validKeys = "0123456789+-x÷.()=DELC";
+                if (validKeys.includes(keyValue)) {
+                    handleInput(keyValue);
+                }
+            });
+
+            // Main input handling function
+            function handleInput(value) {
+                if (screen.value === "Error") {
+                    screen.value = "";
+                }
+
+                switch (value) {
+                    case "C":
+                        screen.value = "";
+                        break;
+
+                    case "DEL":
+                        screen.value = screen.value.slice(0, -1);
+                        break;
+
+                    case "=":
+                        try {
+                            // Prepare expression for eval
+                            let expression = screen.value
+                                .replace(/x/g, "*")
+                                .replace(/÷/g, "/");
+
+                            // Check for invalid expressions
+                            if (!expression || isNaN(eval(expression.replace(/[%()]/g, '0')))) {
+                                throw new Error("Invalid Expression");
+                            }
+                                
+                            let result = eval(expression);
+                            
+                            // Add to history
+                            history.push({ expression: screen.value, result: result });
+                            updateHistoryUI();
+                            
+                            screen.value = result;
+                        } catch (e) {
+                            screen.value = "Error";
+                        }
+                        break;
+                    
+                    case "HIST":
+                        historyPanel.classList.toggle("visible");
+                        break;
+
+                    default:
+                        screen.value += value;
+                        break;
+                }
+            }
+
+            // Function to update the history panel UI
+            function updateHistoryUI() {
+                historyList.innerHTML = ""; // Clear old history
+                // Go through history in reverse (newest first)
+                for (let i = history.length - 1; i >= 0; i--) {
+                    const li = document.createElement("li");
+                    li.innerHTML = `${history[i].expression} = <strong>${history[i].result}</strong>`;
+                    historyList.appendChild(li);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
+
